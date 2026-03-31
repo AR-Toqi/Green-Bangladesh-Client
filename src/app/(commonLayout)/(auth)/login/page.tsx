@@ -1,22 +1,38 @@
-import React from "react";
+"use client";
+
+import { AuthForm } from "@/components/auth/AuthForm";
+import { loginSchema, TLogin } from "@/zod/auth.schema";
+import { loginUserAction } from "./_actions";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (data: TLogin) => {
+    setLoading(true);
+    try {
+      const result = await loginUserAction(data);
+      if (result && !result.success) {
+        toast.error(result.message || "Login failed");
+      } else {
+        toast.success("Logged in successfully!");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="container py-10 max-w-sm mx-auto">
-      <h1 className="text-2xl font-bold text-center">Login</h1>
-      <form className="mt-8 space-y-4">
-        <div>
-          <label>Email</label>
-          <input type="email" className="w-full border p-2 rounded" />
-        </div>
-        <div>
-          <label>Password</label>
-          <input type="password" className="w-full border p-2 rounded" />
-        </div>
-        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
-          Sign In
-        </button>
-      </form>
+    <div className="flex min-h-[calc(100vh-80px)] flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--primary)_0%,_transparent_60%)] px-4">
+      <AuthForm
+        type="login"
+        schema={loginSchema}
+        onSubmit={handleLogin}
+        isLoading={loading}
+      />
     </div>
   );
 }

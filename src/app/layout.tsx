@@ -27,6 +27,8 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
+import { Toaster } from "@/components/ui/sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,6 +43,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         <QueryProvider>
           {children}
+          <Toaster richColors position="top-right" />
         </QueryProvider>
       </body>
     </html>
