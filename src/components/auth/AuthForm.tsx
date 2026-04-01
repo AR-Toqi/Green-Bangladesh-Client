@@ -30,7 +30,7 @@ type AuthValues = {
 interface AuthFormProps<T extends FieldValues & AuthValues> {
   type: "login" | "register";
   schema: z.ZodType<T>;
-  action: (data: T) => Promise<{ success: boolean; message?: string } | void>;
+  action: (data: T) => Promise<{ success: boolean; message?: string; role?: string } | void>;
 }
 
 export function AuthForm<T extends FieldValues & AuthValues>({
@@ -60,6 +60,12 @@ export function AuthForm<T extends FieldValues & AuthValues>({
           toast.success(result.message || "Success!");
           if (type === "register") {
             router.push("/login");
+          } else if (type === "login") {
+            if (result.role === "admin") {
+              router.push("/admin");
+            } else {
+              router.push("/");
+            }
           }
         } else {
           toast.error(result.message || "Action failed");

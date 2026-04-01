@@ -7,7 +7,7 @@ if (!API_BASE_URL) {
   throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
 }
 
-export const loginUserApi = async (data: TLogin): Promise<TLoginResponse> => {
+export const loginUserApi = async (data: TLogin): Promise<TLoginResponse & { setCookies: string[] }> => {
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: {
@@ -21,10 +21,13 @@ export const loginUserApi = async (data: TLogin): Promise<TLoginResponse> => {
     throw new Error(errorData.message || "Failed to login");
   }
 
-  return response.json();
+  const result = await response.json();
+  const setCookies = response.headers.getSetCookie();
+
+  return { ...result, setCookies };
 };
 
-export const registerUserApi = async (data: TRegister): Promise<TRegisterResponse> => {
+export const registerUserApi = async (data: TRegister): Promise<TRegisterResponse & { setCookies: string[] }> => {
   const response = await fetch(`${API_BASE_URL}/auth/register`, {
     method: "POST",
     headers: {
@@ -38,5 +41,8 @@ export const registerUserApi = async (data: TRegister): Promise<TRegisterRespons
     throw new Error(errorData.message || "Failed to register");
   }
 
-  return response.json();
+  const result = await response.json();
+  const setCookies = response.headers.getSetCookie();
+
+  return { ...result, setCookies };
 };

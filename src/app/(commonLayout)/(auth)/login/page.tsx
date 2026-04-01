@@ -1,11 +1,20 @@
 import { LoginForm } from "@/components/auth/LoginForm";
 import { getAccessToken } from "@/lib/cookieUtils";
 import { redirect } from "next/navigation";
+import * as jwt from "jsonwebtoken";
 
 export default async function LoginPage() {
   const token = await getAccessToken();
 
   if (token) {
+    try {
+      const decoded = jwt.decode(token) as jwt.JwtPayload;
+      if (decoded && decoded.role && typeof decoded.role === "string" && decoded.role.toLowerCase() === "admin") {
+        redirect("/admin");
+      }
+    } catch (e) {
+      // ignore
+    }
     redirect("/");
   }
 

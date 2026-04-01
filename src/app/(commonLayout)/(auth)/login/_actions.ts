@@ -1,19 +1,32 @@
 "use server";
 
 import { loginUserApi } from "@/services/auth.service";
-import { setAccessToken } from "@/lib/cookieUtils";
+import { parseAndSetCookies } from "@/lib/cookieUtils";
 import { TLogin } from "@/zod/auth.schema";
-import { redirect } from "next/navigation";
+import * as jwt from "jsonwebtoken";
 
 export const loginUserAction = async (data: TLogin) => {
-  let success = false;
-
   try {
     const res = await loginUserApi(data);
 
     if (res.success && res.data.accessToken) {
-      await setAccessToken(res.data.accessToken);
-      success = true;
+      if (res.setCookies && res.setCookies.length > 0) {
+        await parseAndSetCookies(res.setCookies);
+      }
+
+      let role = "user";
+      try {
+        const decoded = jwt.decode(res.data.accessToken) as jwt.JwtPayload;
+        if (decoded && decoded.role) {
+          role = decoded.role.toLowerCase();
+        } else if (decoded && decoded.user && decoded.user.role) {
+          role = decoded.user.role.toLowerCase();
+        }
+      } catch (err) {
+        console.error("Failed to decode token", err);
+      }
+
+      return { success: true, message: "Login successful!", role };
     } else {
       return {
         success: false,
@@ -25,9 +38,5 @@ export const loginUserAction = async (data: TLogin) => {
       success: false,
       message: error.message || "An unexpected error occurred",
     };
-  }
-
-  if (success) {
-    redirect("/");
   }
 };

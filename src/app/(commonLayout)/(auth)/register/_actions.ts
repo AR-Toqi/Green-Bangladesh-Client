@@ -1,6 +1,7 @@
 "use server";
 
 import { registerUserApi } from "@/services/auth.service";
+import { parseAndSetCookies } from "@/lib/cookieUtils";
 import { TRegister } from "@/zod/auth.schema";
 
 export const registerUserAction = async (data: TRegister) => {
@@ -8,9 +9,12 @@ export const registerUserAction = async (data: TRegister) => {
     const res = await registerUserApi(data);
 
     if (res.success) {
+      if (res.setCookies && res.setCookies.length > 0) {
+        await parseAndSetCookies(res.setCookies);
+      }
       return {
         success: true,
-        message: "Registration successful! Please login to continue.",
+        message: "Registration successful!",
       };
     } else {
       return {
