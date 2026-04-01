@@ -16,6 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type AuthValues = {
   name?: string;
@@ -27,16 +30,17 @@ type AuthValues = {
 interface AuthFormProps<T extends FieldValues & AuthValues> {
   type: "login" | "register";
   schema: z.ZodType<T>;
-  onSubmit: (data: T) => void;
-  isLoading?: boolean;
+  action: (data: T) => Promise<{ success: boolean; message?: string } | void>;
 }
 
 export function AuthForm<T extends FieldValues & AuthValues>({
   type,
   schema,
-  onSubmit,
-  isLoading = false,
+  action,
 }: AuthFormProps<T>) {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
   const form = useForm<T>({
     resolver: zodResolver(schema as any),
     defaultValues: {
@@ -46,6 +50,27 @@ export function AuthForm<T extends FieldValues & AuthValues>({
       confirmPassword: "",
     } as any,
   });
+
+  const handleFormSubmit = async (data: T) => {
+    setIsLoading(true);
+    try {
+      const result = await action(data);
+      if (result) {
+        if (result.success) {
+          toast.success(result.message || "Success!");
+          if (type === "register") {
+            router.push("/login");
+          }
+        } else {
+          toast.error(result.message || "Action failed");
+        }
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const isLogin = type === "login";
 
@@ -63,7 +88,7 @@ export function AuthForm<T extends FieldValues & AuthValues>({
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4">
             {!isLogin && (
               <FormField
                 control={form.control}

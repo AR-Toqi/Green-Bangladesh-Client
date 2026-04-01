@@ -13,6 +13,11 @@ export const setAccessToken = async (token: string) => {
   });
 };
 
+export const getAccessToken = async () => {
+  const cookieStore = await cookies();
+  return cookieStore.get("accessToken")?.value;
+};
+
 export const deleteAccessToken = async () => {
   const cookieStore = await cookies();
   cookieStore.delete("accessToken");
