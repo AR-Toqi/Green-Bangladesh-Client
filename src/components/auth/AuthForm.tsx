@@ -81,7 +81,7 @@ export function AuthForm<T extends FieldValues & AuthValues>({
   const isLogin = type === "login";
 
   return (
-    <Card className="w-full max-w-md mx-auto border-none">
+    <Card className="w-full max-w-md mx-auto border-none bg-zinc-900">
       <CardHeader className="space-y-1 text-center">
         <CardTitle className="text-3xl font-bold tracking-tight text-primary">
           {isLogin ? "Welcome Back" : "Join Us"}
@@ -103,7 +103,7 @@ export function AuthForm<T extends FieldValues & AuthValues>({
                   <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} />
+                      <Input className="bg-zinc-800 text-gray-400" placeholder="John Doe" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -117,7 +117,7 @@ export function AuthForm<T extends FieldValues & AuthValues>({
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" type="email" {...field} />
+                    <Input className="bg-zinc-800 text-gray-400" placeholder="name@example.com" type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -130,7 +130,7 @@ export function AuthForm<T extends FieldValues & AuthValues>({
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="••••••••" type="password" {...field} />
+                    <Input className="bg-zinc-800 text-gray-400" placeholder="••••••••" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,7 +144,7 @@ export function AuthForm<T extends FieldValues & AuthValues>({
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="••••••••" type="password" {...field} />
+                      <Input className="bg-zinc-800 text-gray-400" placeholder="••••••••" type="password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -153,7 +153,7 @@ export function AuthForm<T extends FieldValues & AuthValues>({
             )}
             <Button
               type="submit"
-              className="w-full h-11 text-lg font-medium transition-all hover:scale-[1.01]"
+              className="w-full h-11 text-lg font-medium bg-green-600 text-white transition-all hover:scale-[1.01] hover:bg-green-700"
               disabled={isLoading}
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
