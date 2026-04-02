@@ -3,11 +3,14 @@ import type { Feature, FeatureCollection, MultiPolygon, Polygon } from "geojson"
 // ── Zone System ──────────────────────────────────────────────────────
 export type TZone = "RED" | "ORANGE" | "GREEN";
 
+export type TStringOrObject = string | { name: string };
+
 // ── Backend API Response Types ───────────────────────────────────────
 export type TDistrict = {
-  _id: string;
-  name: string;
-  division: string;
+  _id?: string;
+  id?: string;
+  name: TStringOrObject;
+  division: TStringOrObject;
   area: number;
   estimatedTrees: number;
   treesPerKm2: number;
@@ -19,6 +22,12 @@ export type TDistrictResponse = {
   success: boolean;
   message: string;
   data: TDistrict[];
+};
+
+export type TSingleDistrictResponse = {
+  success: boolean;
+  message: string;
+  data: TDistrict;
 };
 
 // ── GeoJSON Feature Types ────────────────────────────────────────────

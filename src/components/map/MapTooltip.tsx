@@ -24,6 +24,8 @@ export const MapTooltip = ({ district, properties, x, y }: MapTooltipProps) => {
 
   const config = ZONE_CONFIG[districtData.zone as keyof typeof ZONE_CONFIG] || ZONE_CONFIG.RED;
 
+  const safeString = (val: any) => (typeof val === "object" ? val?.name : val) || "";
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -40,7 +42,7 @@ export const MapTooltip = ({ district, properties, x, y }: MapTooltipProps) => {
     >
       <div className="flex items-center justify-between gap-4 mb-2">
         <h3 className="font-bold text-zinc-900 dark:text-zinc-50 uppercase tracking-wider text-sm">
-          {districtData.name}
+          {safeString(districtData.name)}
         </h3>
         <span
           className="h-2.5 w-2.5 rounded-full ring-4 ring-white dark:ring-zinc-950"
