@@ -18,7 +18,7 @@ export async function reportPlantationAction(data: TPlantationReport) {
     
     // Revalidate the leaderboard and user plantations after submission
     revalidatePath("/leaderboard");
-    revalidatePath("/profile/plantations");
+    revalidatePath("/profile");
     
     return {
       success: true,
@@ -29,6 +29,27 @@ export async function reportPlantationAction(data: TPlantationReport) {
     return {
       success: false,
       message: error.message || "Failed to submit plantation report",
+    };
+  }
+}
+
+export async function updateUserProfileAction(data: any) {
+  try {
+    // We must import the user service dynamically or at the top
+    const { updateCurrentUserApi } = await import("@/services/user.service");
+    
+    const result = await updateCurrentUserApi(data);
+    revalidatePath("/profile");
+    
+    return {
+      success: true,
+      message: result.message || "Profile updated successfully!",
+    };
+  } catch (error: any) {
+    console.error("updateUserProfileAction Error:", error);
+    return {
+      success: false,
+      message: error.message || "Failed to update profile",
     };
   }
 }

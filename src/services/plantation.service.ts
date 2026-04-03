@@ -62,3 +62,37 @@ export const createPlantationApi = async (data: TPlantationReport): Promise<TPla
 
   return response.json();
 };
+
+export const getPlantationsApi = async () => {
+  try {
+    const token = await getAccessToken();
+    const cookieStore = await cookies();
+    
+    const refreshToken = cookieStore.get("refreshToken")?.value;
+    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    
+    if (token) {
+      headers["Authorization"] = token;
+      headers["Cookie"] = `accessToken=${token}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`;
+    }
+
+    const response = await fetch(`${cleanBaseUrl}/plantations`, {
+      method: "GET",
+      headers,
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+        console.log("getPlantationsApi error status:", response.status);
+        return { data: [] };
+    }
+    return response.json();
+  } catch (error) {
+    console.error("getPlantationsApi throw:", error);
+    return { data: [] };
+  }
+};

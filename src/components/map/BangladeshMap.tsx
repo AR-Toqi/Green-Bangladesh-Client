@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import * as d3 from "d3-geo";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import {
   TDistrict,
   TDistrictFeatureCollection,
@@ -31,6 +32,7 @@ const normalizeMapName = (name: string) => {
 };
 
 export const BangladeshMap = ({ districtsData, className }: BangladeshMapProps) => {
+  const router = useRouter();
   const [geoData, setGeoData] = useState<TDistrictFeatureCollection | null>(null);
   const [hoveredDistrict, setHoveredDistrict] = useState<{
     district: TDistrict | null;
@@ -147,6 +149,12 @@ export const BangladeshMap = ({ districtsData, className }: BangladeshMapProps) 
                 }}
                 onMouseMove={(e) => handleMouseMove(e, p)}
                 onMouseLeave={() => setHoveredDistrict(null)}
+                onClick={() => {
+                  const districtId = p.data?._id || p.data?.id;
+                  if (districtId) {
+                    router.push(`/districts/${districtId}`);
+                  }
+                }}
                 className="cursor-pointer transition-all preserve-3d"
                 style={{
                   filter: isHovered ? "brightness(1.1)" : "none",
