@@ -1,8 +1,9 @@
 export type TLeaderboardItem = {
-  _id: string;
-  districtName: string;
-  totalTreesPlanted: number;
+  id: string;
+  name: string;
+  totalPlanted: number;
   reportCount: number;
+  avatar?: string;
   lastPlantationAt?: string;
 };
 

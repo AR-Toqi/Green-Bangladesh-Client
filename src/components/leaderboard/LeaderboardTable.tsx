@@ -16,9 +16,9 @@ const RankBadge = ({ rank }: { rank: number }) => {
 };
 
 export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
-  // Sort by totalTreesPlanted to ensure leaderboard order
-  const sortedData = [...data].sort((a, b) => (b.totalTreesPlanted || 0) - (a.totalTreesPlanted || 0));
-  const maxTrees = Math.max(...sortedData.map(d => (d.totalTreesPlanted || 0)), 1);
+  // Sort by totalPlanted to ensure leaderboard order
+  const sortedData = [...data].sort((a, b) => (b.totalPlanted || 0) - (a.totalPlanted || 0));
+  const maxTrees = Math.max(...sortedData.map(d => (d.totalPlanted || 0)), 1);
 
   return (
     <div className="space-y-6">
@@ -27,7 +27,7 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
         <div className="space-y-2 text-center md:text-left">
           <h2 className="text-2xl font-black text-zinc-50 flex items-center gap-3">
              <TrendingUp className="text-green-500" />
-             National Tree Plantation Rankings
+             Community Leaderboard
           </h2>
           <p className="text-zinc-500 text-sm max-w-lg">
             Real-time rankings based on community reports and plantation activities across Bangladesh.
@@ -37,7 +37,7 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
            <div className="px-5 py-3 rounded-2xl bg-zinc-900 border border-zinc-800 text-center">
               <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">Total Impact</p>
               <p className="text-xl font-black text-green-500">
-                {sortedData.reduce((acc, curr) => acc + (curr.totalTreesPlanted || 0), 0).toLocaleString()} <span className="text-xs text-zinc-600">Trees</span>
+                {sortedData.reduce((acc, curr) => acc + (curr.totalPlanted || 0), 0).toLocaleString()} <span className="text-xs text-zinc-600">Trees</span>
               </p>
            </div>
         </div>
@@ -47,7 +47,7 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
       <div className="grid gap-4">
         {sortedData.map((item, index) => {
           const rank = index + 1;
-          const currentTrees = item.totalTreesPlanted || 0;
+          const currentTrees = item.totalPlanted || 0;
           const percentage = (currentTrees / maxTrees) * 100;
           
           return (
@@ -56,7 +56,7 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              key={item._id}
+              key={item.name || index}
               className={`p-6 rounded-3xl bg-zinc-950/50 border border-zinc-900/50 hover:border-green-500/30 transition-all group relative overflow-hidden ${rank === 1 ? 'ring-2 ring-yellow-500/20' : ''}`}
             >
               {/* Background Gradient for Rank 1 */}
@@ -70,25 +70,33 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
                   <RankBadge rank={rank} />
                 </div>
 
-                {/* District Info */}
+                {/* User Info */}
                 <div className="flex-grow space-y-4 w-full">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <h3 className="text-xl font-black text-zinc-50 group-hover:text-green-500 transition-colors">
-                        {item.districtName}
-                      </h3>
-                      <div className="flex items-center gap-4 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
-                         <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800">
-                            <ClipboardList size={10} className="text-blue-500" />
-                            {item.reportCount} Reports
-                         </span>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-zinc-800 flex-shrink-0">
+                        <img 
+                          src={item.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.name)}&background=random&color=fff`} 
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
+                      <div className="space-y-1">
+                        <h3 className="text-xl font-black text-zinc-50 group-hover:text-green-500 transition-colors">
+                          {item.name}
+                        </h3>
+                        <div className="flex items-center gap-4 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                           <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800">
+                              <ClipboardList size={10} className="text-blue-500" />
+                              {item.reportCount} Reports
+                           </span>
+                       </div>
                     </div>
-                    
+                  </div>
                     <div className="text-right">
                        <p className="text-2xl font-black text-zinc-50 flex items-center md:justify-end gap-2">
                           <Trees className="text-green-600" size={24} />
-                          {(item.totalTreesPlanted || 0).toLocaleString()}
+                          {(item.totalPlanted || 0).toLocaleString()}
                        </p>
                        <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.2em] mt-1">Trees Planted</p>
                     </div>

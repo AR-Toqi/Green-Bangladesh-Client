@@ -61,10 +61,13 @@ export function AuthForm<T extends FieldValues & AuthValues>({
           if (type === "register") {
             router.push("/login");
           } else if (type === "login") {
+            const searchParams = new URLSearchParams(window.location.search);
+            const redirectPath = searchParams.get("redirect");
+            
             if (result.role === "admin") {
-              router.push("/admin");
+              router.push(redirectPath || "/admin");
             } else {
-              router.push("/");
+              router.push(redirectPath || "/");
             }
           }
         } else {

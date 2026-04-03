@@ -3,6 +3,7 @@ import { ZONE_CONFIG } from "@/types/district";
 import { MapPin, Trees, Ruler, Activity, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 
 interface DistrictDetailPageProps {
   params: Promise<{
@@ -28,6 +29,9 @@ export async function generateMetadata({ params }: DistrictDetailPageProps) {
 
 export default async function DistrictDetailPage({ params }: DistrictDetailPageProps) {
   const { id } = await params;
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
+  const href = token ? "/report-plantation" : "/login?redirect=/report-plantation";
   const safeString = (val: any) => (typeof val === "object" ? val?.name : val) || "";
   
   let district;
@@ -162,7 +166,7 @@ export default async function DistrictDetailPage({ params }: DistrictDetailPageP
             </p>
           </div>
           <Link
-            href="/plantation/create"
+            href={href}
             className="px-10 py-5 bg-white text-green-700 font-black uppercase tracking-widest text-xs rounded-full hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10 relative z-10"
           >
             Plant a Tree
