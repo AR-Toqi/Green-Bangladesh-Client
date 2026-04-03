@@ -46,3 +46,54 @@ export const registerUserApi = async (data: TRegister): Promise<TRegisterRespons
 
   return { ...result, setCookies };
 };
+
+export const verifyEmailApi = async (data: { email: string; otp: string }) => {
+  const response = await fetch(`${API_BASE_URL}/auth/verify-email`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to verify email");
+  }
+
+  return response.json();
+};
+
+export const forgotPasswordApi = async (data: { email: string }) => {
+  const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to send reset code");
+  }
+
+  return response.json();
+};
+
+export const resetPasswordApi = async (data: { email: string; otp: string; newPassword: string }) => {
+  const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to reset password");
+  }
+
+  return response.json();
+};

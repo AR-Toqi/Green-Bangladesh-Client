@@ -1,16 +1,10 @@
-import React from "react";
+import { ForgotPasswordForm } from "@/components/auth/ForgotPasswordForm";
+import { forgotPasswordAction } from "./_actions";
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="container py-10">
-      <h1>Forgot Password</h1>
-      <form>
-        <div>
-          <label>Email Address</label>
-          <input type="email" placeholder="Enter your registered email" />
-        </div>
-        <button type="submit">Send Reset Link</button>
-      </form>
+    <div className="flex min-h-[calc(100vh-80px)] flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--primary)_0%,_transparent_60%)] px-4">
+      <ForgotPasswordForm action={forgotPasswordAction} />
     </div>
   );
 }

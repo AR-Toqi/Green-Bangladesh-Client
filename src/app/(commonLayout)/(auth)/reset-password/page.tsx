@@ -1,20 +1,18 @@
-import React from "react";
+import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
+import { resetPasswordAction } from "./_actions";
 
-export default function ResetPasswordPage() {
+export default async function ResetPasswordPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const resolvedSearchParams = await searchParams;
+  const emailParam = resolvedSearchParams?.email;
+  const email = typeof emailParam === "string" ? emailParam : "";
+
   return (
-    <div className="container py-10">
-      <h1>Reset Password</h1>
-      <form>
-        <div>
-          <label>New Password</label>
-          <input type="password" />
-        </div>
-        <div>
-          <label>Confirm Password</label>
-          <input type="password" />
-        </div>
-        <button type="submit">Update Password</button>
-      </form>
+    <div className="flex min-h-[calc(100vh-80px)] flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--primary)_0%,_transparent_60%)] px-4">
+      <ResetPasswordForm email={email} action={resetPasswordAction} />
     </div>
   );
 }

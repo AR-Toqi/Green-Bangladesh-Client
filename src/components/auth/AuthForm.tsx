@@ -59,7 +59,7 @@ export function AuthForm<T extends FieldValues & AuthValues>({
         if (result.success) {
           toast.success(result.message || "Success!");
           if (type === "register") {
-            router.push("/login");
+            router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
           } else if (type === "login") {
             const searchParams = new URLSearchParams(window.location.search);
             const redirectPath = searchParams.get("redirect");
@@ -131,7 +131,14 @@ export function AuthForm<T extends FieldValues & AuthValues>({
               name={"password" as Path<T>}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <div className="flex items-center justify-between">
+                    <FormLabel>Password</FormLabel>
+                    {isLogin && (
+                      <Link href="/forgot-password" className="text-xs font-medium text-green-500 hover:text-green-400 hover:underline transition-colors">
+                        Forgot password?
+                      </Link>
+                    )}
+                  </div>
                   <FormControl>
                     <Input className="bg-zinc-800 text-gray-400" placeholder="••••••••" type="password" {...field} />
                   </FormControl>
