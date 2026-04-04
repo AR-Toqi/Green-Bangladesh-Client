@@ -5,7 +5,9 @@ import { BangladeshMap } from "@/components/map/BangladeshMap";
 import { getAllDistrictsApi } from "@/services/district.service";
 import { ZONE_CONFIG, TDistrictResponse } from "@/types/district";
 import { motion } from "framer-motion";
-import { Trees, MapPin, Wind } from "lucide-react";
+import { Trees, MapPin, Wind, TreePine, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface HeroProps {
   initialData: TDistrictResponse;
@@ -45,6 +47,15 @@ export const Hero = ({ initialData }: HeroProps) => {
                 Visualizing the environmental tree density across 64 districts. 
                 Our interactive map helps identify zones that need immediate reforestation efforts.
               </p>
+              <div className="pt-2">
+                <Link href="/report-plantation">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white rounded-full px-8 py-6 font-bold text-base flex items-center gap-3 transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-green-900/40 group">
+                    <TreePine size={20} className="group-hover:rotate-12 transition-transform" />
+                    Join the Movement: Plant a Tree
+                    <ArrowRight size={18} className="ml-1 opacity-50 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+              </div>
             </motion.div>
 
             {/* ── Stats Grid ─────────────────────────────────────────── */}

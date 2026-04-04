@@ -1,4 +1,6 @@
 import { TUpdateProfile, TUserProfileResponse, TUpdateProfileResponse, TUserProfile } from "@/types/user";
+import { getAccessToken } from "@/lib/cookieUtils";
+import { cookies } from "next/headers";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -14,8 +16,21 @@ type TAuthTokens = {
   sessionToken?: string;
 };
 
-export const getCurrentUserApi = async (tokens: TAuthTokens): Promise<TUserProfileResponse> => {
-  const { accessToken, refreshToken, sessionToken } = tokens;
+export const getCurrentUserApi = async (tokens?: TAuthTokens): Promise<TUserProfileResponse> => {
+  let accessToken = tokens?.accessToken;
+  let refreshToken = tokens?.refreshToken;
+  let sessionToken = tokens?.sessionToken;
+
+  if (!accessToken) {
+    accessToken = await getAccessToken() || undefined;
+    const cookieStore = await cookies();
+    refreshToken = cookieStore.get("refreshToken")?.value;
+    sessionToken = cookieStore.get("better-auth.session_token")?.value;
+  }
+
+  if (!accessToken) {
+    throw new Error("Authentication required to fetch profile");
+  }
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -37,8 +52,21 @@ export const getCurrentUserApi = async (tokens: TAuthTokens): Promise<TUserProfi
   return response.json();
 };
 
-export const updateCurrentUserApi = async (data: TUpdateProfile, tokens: TAuthTokens): Promise<TUpdateProfileResponse> => {
-  const { accessToken, refreshToken, sessionToken } = tokens;
+export const updateCurrentUserApi = async (data: TUpdateProfile, tokens?: TAuthTokens): Promise<TUpdateProfileResponse> => {
+  let accessToken = tokens?.accessToken;
+  let refreshToken = tokens?.refreshToken;
+  let sessionToken = tokens?.sessionToken;
+
+  if (!accessToken) {
+    accessToken = await getAccessToken() || undefined;
+    const cookieStore = await cookies();
+    refreshToken = cookieStore.get("refreshToken")?.value;
+    sessionToken = cookieStore.get("better-auth.session_token")?.value;
+  }
+
+  if (!accessToken) {
+    throw new Error("Authentication required to update profile");
+  }
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",

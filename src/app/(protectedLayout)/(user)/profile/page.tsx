@@ -1,7 +1,8 @@
 import { getCurrentUserApi } from "@/services/user.service";
 import { getPlantationsApi } from "@/services/plantation.service";
+import { logoutUserAction } from "@/app/(commonLayout)/_actions";
 import Link from "next/link";
-import { MapPin, Mail, Calendar, Edit3, Shield, Star, Award, TreePine } from "lucide-react";
+import { MapPin, Mail, Calendar, Edit3, Shield, Star, Award, TreePine, LogOut } from "lucide-react";
 import { format } from "date-fns";
 
 export default async function ProfilePage() {
@@ -98,13 +99,24 @@ export default async function ProfilePage() {
                     {email}
                   </p>
                 </div>
-                <Link
-                  href="/profile/edit"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-100 hover:bg-white text-zinc-950 rounded-full font-bold uppercase tracking-widest text-xs transition-transform hover:scale-105"
-                >
-                  <Edit3 size={16} />
-                  Edit Profile
-                </Link>
+                <div className="flex flex-col gap-3">
+                  <Link
+                    href="/profile/edit"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-100 hover:bg-white text-zinc-950 rounded-full font-bold uppercase tracking-widest text-xs transition-transform hover:scale-105"
+                  >
+                    <Edit3 size={16} />
+                    Edit Profile
+                  </Link>
+                  <form action={logoutUserAction}>
+                    <button
+                      type="submit"
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-900 hover:bg-red-500/10 text-zinc-400 hover:text-red-500 rounded-full font-bold uppercase tracking-widest text-xs transition-all border border-zinc-800 hover:border-red-500/20"
+                    >
+                      <LogOut size={16} />
+                      Logout
+                    </button>
+                  </form>
+                </div>
               </div>
 
               {profile?.bio && (

@@ -1,6 +1,8 @@
 import { getAllDistrictsApi } from "@/services/district.service";
 import { PlantationForm } from "@/components/plantation/PlantationForm";
 import { Trees } from "lucide-react";
+import { getAccessToken } from "@/lib/cookieUtils";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Report Plantation | Green Bangladesh",
@@ -8,6 +10,12 @@ export const metadata = {
 };
 
 export default async function ReportPlantationPage() {
+  const token = await getAccessToken();
+
+  if (!token) {
+    redirect("/login");
+  }
+
   const response = await getAllDistrictsApi();
   const districts = response.data || [];
 

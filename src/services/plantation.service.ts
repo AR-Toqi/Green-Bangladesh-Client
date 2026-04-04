@@ -96,3 +96,48 @@ export const getPlantationsApi = async () => {
     return { data: [] };
   }
 };
+
+export const getAllPlantationsAdminApi = async (tokens: { accessToken: string; refreshToken?: string; sessionToken?: string }): Promise<{ success: boolean; data: any[] }> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${cleanBaseUrl}/admin/plantations`, {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    console.error("getAllPlantationsAdminApi Failed:", response.status);
+    return { success: false, data: [] };
+  }
+
+  return response.json();
+};
+
+export const deletePlantationApi = async (id: string, tokens: { accessToken: string; refreshToken?: string; sessionToken?: string }): Promise<{ success: boolean; message: string }> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${cleanBaseUrl}/admin/plantations/${id}`, {
+    method: "DELETE",
+    headers,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to delete plantation report");
+  }
+
+  return response.json();
+};
