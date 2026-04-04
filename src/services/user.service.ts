@@ -1,7 +1,4 @@
-import { checkAndRefreshToken } from "@/lib/tokenUtils";
-import { getAccessToken } from "@/lib/cookieUtils";
-import { cookies } from "next/headers";
-import { TUpdateProfile, TUserProfileResponse, TUpdateProfileResponse } from "@/types/user";
+import { TUpdateProfile, TUserProfileResponse, TUpdateProfileResponse, TUserProfile } from "@/types/user";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -11,22 +8,19 @@ if (!API_BASE_URL) {
 
 const cleanBaseUrl = API_BASE_URL.endsWith("/") ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
 
-export const getCurrentUserApi = async (): Promise<TUserProfileResponse> => {
-  await checkAndRefreshToken();
-  const token = await getAccessToken();
-  const cookieStore = await cookies();
+type TAuthTokens = {
+  accessToken: string;
+  refreshToken?: string;
+  sessionToken?: string;
+};
 
-  if (!token) {
-    throw new Error("Session expired. Please log in again.");
-  }
-
-  const refreshToken = cookieStore.get("refreshToken")?.value;
-  const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+export const getCurrentUserApi = async (tokens: TAuthTokens): Promise<TUserProfileResponse> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    "Authorization": token,
-    "Cookie": `accessToken=${token}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
   };
 
   const response = await fetch(`${cleanBaseUrl}/users/me`, {
@@ -43,22 +37,13 @@ export const getCurrentUserApi = async (): Promise<TUserProfileResponse> => {
   return response.json();
 };
 
-export const updateCurrentUserApi = async (data: TUpdateProfile): Promise<TUpdateProfileResponse> => {
-  await checkAndRefreshToken();
-  const token = await getAccessToken();
-  const cookieStore = await cookies();
-
-  if (!token) {
-    throw new Error("Session expired. Please log in again.");
-  }
-
-  const refreshToken = cookieStore.get("refreshToken")?.value;
-  const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+export const updateCurrentUserApi = async (data: TUpdateProfile, tokens: TAuthTokens): Promise<TUpdateProfileResponse> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    "Authorization": token,
-    "Cookie": `accessToken=${token}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
   };
 
   const response = await fetch(`${cleanBaseUrl}/users/me`, {
@@ -74,3 +59,166 @@ export const updateCurrentUserApi = async (data: TUpdateProfile): Promise<TUpdat
 
   return response.json();
 };
+
+export const getAllUsersApi = async (tokens: TAuthTokens): Promise<{ success: boolean; data: TUserProfile[] }> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${cleanBaseUrl}/admin/users`, {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    console.error("getAllUsersApi Failed:", response.status);
+    return { success: false, data: [] };
+  }
+
+  return response.json();
+};
+
+export const updateUserRoleApi = async (id: string, role: string, tokens: TAuthTokens): Promise<TUserProfileResponse> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${cleanBaseUrl}/admin/users/${id}/role`, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify({ role }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to update user role");
+  }
+
+  return response.json();
+};
+
+export const updateUserStatusApi = async (id: string, status: string, tokens: TAuthTokens): Promise<TUserProfileResponse> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${cleanBaseUrl}/admin/users/${id}/status`, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify({ status }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to update user status");
+  }
+
+  return response.json();
+};
+
+export const getAdminsApi = async (tokens: TAuthTokens): Promise<{ success: boolean; data: TUserProfile[] }> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${cleanBaseUrl}/admin/admins`, {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    console.error("getAdminsApi Failed:", response.status);
+    return { success: false, data: [] };
+  }
+
+  return response.json();
+};
+
+export const deleteUserApi = async (id: string, tokens: TAuthTokens): Promise<{ success: boolean; message: string }> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${cleanBaseUrl}/admin/users/${id}`, {
+    method: "DELETE",
+    headers,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to delete user account");
+  }
+
+  return response.json();
+};
+
+export const deleteAdminApi = async (id: string, tokens: TAuthTokens): Promise<{ success: boolean; message: string }> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${cleanBaseUrl}/admin/admins/${id}`, {
+    method: "DELETE",
+    headers,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to delete administrator");
+  }
+
+  return response.json();
+};
+
+export const updateAdminProfileApi = async (data: Partial<TUserProfile>, tokens: TAuthTokens): Promise<TUserProfileResponse> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${cleanBaseUrl}/admin/profile`, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to update admin profile");
+  }
+
+  return response.json();
+};
+
+
+
+

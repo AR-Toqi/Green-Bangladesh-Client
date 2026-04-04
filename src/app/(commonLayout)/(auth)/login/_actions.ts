@@ -16,15 +16,20 @@ export const loginUserAction = async (data: TLogin) => {
 
       let role = "user";
       try {
-        const decoded = jwt.decode(res.data.accessToken) as jwt.JwtPayload;
-        if (decoded && decoded.role) {
-          role = decoded.role.toLowerCase();
-        } else if (decoded && decoded.user && decoded.user.role) {
-          role = decoded.user.role.toLowerCase();
+        const decoded = jwt.decode(res.data.accessToken) as any;
+        console.log("Decoded Token for Role Check:", JSON.stringify(decoded));
+        
+        // Check multiple possible locations for role
+        const rawRole = decoded?.role || decoded?.user?.role || (Array.isArray(decoded?.roles) ? decoded?.roles[0] : null);
+        
+        if (rawRole) {
+          role = rawRole.toLowerCase();
+          console.log("Detected Role:", role);
         }
       } catch (err) {
         console.error("Failed to decode token", err);
       }
+
 
       return { success: true, message: "Login successful!", role };
     } else {

@@ -1,4 +1,4 @@
-import { TDistrictResponse, TSingleDistrictResponse } from "@/types/district";
+import { TDistrictResponse, TSingleDistrictResponse, TDistrict } from "@/types/district";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -31,3 +31,31 @@ export const getDistrictByIdApi = async (id: string): Promise<TSingleDistrictRes
 
   return response.json();
 };
+
+export const updateDistrictApi = async (
+  id: string, 
+  data: Partial<TDistrict>, 
+  tokens: { accessToken: string; refreshToken?: string; sessionToken?: string }
+): Promise<TSingleDistrictResponse> => {
+  const { accessToken, refreshToken, sessionToken } = tokens;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": accessToken,
+    "Cookie": `accessToken=${accessToken}; refreshToken=${refreshToken || ""}; better-auth.session_token=${sessionToken || ""}`,
+  };
+
+  const response = await fetch(`${API_BASE_URL}/admin/districts/${id}`, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to update district");
+  }
+
+  return response.json();
+};
+

@@ -17,7 +17,9 @@ export default function AdminDashboardLayout({
           <Link href="/admin" className="flex items-center gap-2 text-green-500">Analytics</Link>
           <Link href="/admin/districts" className="flex items-center gap-2 text-zinc-400 transition-colors hover:text-green-500">Manage Districts</Link>
           <Link href="/admin/users" className="flex items-center gap-2 text-zinc-400 transition-colors hover:text-green-500">Manage Users</Link>
+          <Link href="/admin/admins" className="flex items-center gap-2 text-zinc-400 transition-colors hover:text-green-500">Manage Admins</Link>
           <Link href="/admin/plantations" className="flex items-center gap-2 text-zinc-400 transition-colors hover:text-green-500">Moderation</Link>
+
         </nav>
         <form action={logoutUserAction} className="mt-auto pt-8">
           <button
