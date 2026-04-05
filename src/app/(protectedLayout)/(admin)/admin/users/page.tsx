@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import * as jwt from "jsonwebtoken";
 import { UserTable } from "./_components/UserTable";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminUsersPage() {
   // 1. Role Protection: Ensure only admins can access this page
   let userRole;

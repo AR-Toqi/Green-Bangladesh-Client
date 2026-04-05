@@ -7,6 +7,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import * as jwt from "jsonwebtoken";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPage() {
   // 1. Role Protection: Ensure only admins can access this page
   let userRole;

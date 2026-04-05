@@ -8,6 +8,8 @@ import * as jwt from "jsonwebtoken";
 import { PlantationTable } from "./_components/PlantationTable";
 import { ShieldAlert, Info } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPlantationsPage() {
   // 1. Role Protection: Ensure only admins can access this page
   let userRole;

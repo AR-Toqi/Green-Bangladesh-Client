@@ -1,14 +1,11 @@
 import { TLogin, TRegister } from "@/zod/auth.schema";
 import { TLoginResponse, TRegisterResponse } from "@/types/auth";
+import { API_BASE_URL, getCleanBaseUrl } from "@/lib/api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-if (!API_BASE_URL) {
-  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
-}
+const cleanBaseUrl = getCleanBaseUrl(API_BASE_URL);
 
 export const loginUserApi = async (data: TLogin): Promise<TLoginResponse & { setCookies: string[] }> => {
-  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+  const response = await fetch(`${cleanBaseUrl}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

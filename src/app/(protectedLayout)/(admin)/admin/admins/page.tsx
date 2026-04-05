@@ -3,6 +3,8 @@ import { getAccessToken } from "@/lib/cookieUtils";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import * as jwt from "jsonwebtoken";
+
+export const dynamic = "force-dynamic";
 import { AdminTable } from "./_components/AdminTable";
 import { TUserProfile } from "@/types/user";
 

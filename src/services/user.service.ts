@@ -1,14 +1,9 @@
 import { TUpdateProfile, TUserProfileResponse, TUpdateProfileResponse, TUserProfile } from "@/types/user";
 import { getAccessToken } from "@/lib/cookieUtils";
 import { cookies } from "next/headers";
+import { API_BASE_URL, getCleanBaseUrl } from "@/lib/api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-if (!API_BASE_URL) {
-  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
-}
-
-const cleanBaseUrl = API_BASE_URL.endsWith("/") ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+const cleanBaseUrl = getCleanBaseUrl(API_BASE_URL);
 
 type TAuthTokens = {
   accessToken: string;

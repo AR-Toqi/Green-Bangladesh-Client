@@ -8,6 +8,8 @@ import { redirect } from "next/navigation";
 import * as jwt from "jsonwebtoken";
 import { DistrictTable } from "./_components/DistrictTable";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDistrictsPage() {
   // 1. Role Protection: Ensure only admins can access this page
   let userRole;
