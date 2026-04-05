@@ -16,7 +16,6 @@ const RankBadge = ({ rank }: { rank: number }) => {
 };
 
 export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
-  // Sort by totalPlanted to ensure leaderboard order
   const sortedData = [...data].sort((a, b) => (b.totalPlanted || 0) - (a.totalPlanted || 0));
   const maxTrees = Math.max(...sortedData.map(d => (d.totalPlanted || 0)), 1);
 
@@ -25,7 +24,7 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
       {/* ── Header Card ─────────────────────────────────────────── */}
       <div className="p-8 rounded-[2.5rem] bg-zinc-950/70 border border-zinc-800 backdrop-blur-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl shadow-green-500/5">
         <div className="space-y-2 text-center md:text-left">
-          <h2 className="text-2xl font-black text-zinc-50 flex items-center gap-3">
+          <h2 className="text-2xl font-black text-zinc-50 flex items-center justify-center md:justify-start gap-3">
              <TrendingUp className="text-green-500" />
              Community Leaderboard
           </h2>
@@ -52,8 +51,7 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
           
           return (
             <motion.div
-              layout
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
               key={item.name || index}
@@ -74,26 +72,26 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
                 <div className="flex-grow space-y-4 w-full">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-zinc-800 flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-zinc-800 flex-shrink-0 bg-zinc-900">
                         <img 
-                          src={item.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.name)}&background=random&color=fff`} 
-                          alt={item.name}
+                          src={item.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.name || "User")}&background=random&color=fff`} 
+                          alt={item.name || "User"}
                           className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="space-y-1">
                         <h3 className="text-xl font-black text-zinc-50 group-hover:text-green-500 transition-colors">
-                          {item.name}
+                          {item.name || "Anonymous User"}
                         </h3>
                         <div className="flex items-center gap-4 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
                            <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800">
                               <ClipboardList size={10} className="text-blue-500" />
-                              {item.reportCount} Reports
+                              {item.reportCount || 0} Reports
                            </span>
                        </div>
                     </div>
                   </div>
-                    <div className="text-right">
+                    <div className="text-left md:text-right">
                        <p className="text-2xl font-black text-zinc-50 flex items-center md:justify-end gap-2">
                           <Trees className="text-green-600" size={24} />
                           {(item.totalPlanted || 0).toLocaleString()}

@@ -24,16 +24,16 @@ export const Hero = ({ initialData }: HeroProps) => {
   const totalTrees = districts.reduce((acc, d) => acc + d.estimatedTrees, 0);
 
   return (
-    <div className="min-h-screen bg-black font-sans selection:bg-green-900/30">
+    <div className="min-h-[80vh] bg-black font-sans selection:bg-green-900/30 overflow-hidden">
       <main className="container mx-auto px-6 py-12 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           {/* ── Left Column: Content ────────────────────────────────── */}
           <div className="space-y-10">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5 }}
               className="space-y-4"
             >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-900/20 border border-green-800 text-green-400 text-xs font-bold uppercase tracking-widest leading-none">
@@ -102,9 +102,9 @@ export const Hero = ({ initialData }: HeroProps) => {
 
           {/* ── Right Column: Map ───────────────────────────────────── */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.6 }}
             className="flex items-center justify-center p-4 lg:p-10 bg-zinc-900/20 rounded-[3rem] border border-zinc-800 shadow-inner overflow-hidden min-h-[600px]"
           >
             <BangladeshMap districtsData={districts} className="max-w-[500px]" />

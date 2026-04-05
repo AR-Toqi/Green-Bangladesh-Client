@@ -1,6 +1,5 @@
 import { getAccessToken } from "@/lib/cookieUtils";
 import { checkAndRefreshToken } from "@/lib/tokenUtils";
-import { logoutUserAction } from "@/app/(commonLayout)/_actions";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { TreePine, User } from "lucide-react";

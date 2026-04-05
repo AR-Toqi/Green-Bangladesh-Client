@@ -86,9 +86,9 @@ export const DistrictListClient = ({ districts }: DistrictListClientProps) => {
               <motion.div
                 key={district._id || `${district.name}-${index}`}
                 layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
                 <Link
@@ -105,7 +105,7 @@ export const DistrictListClient = ({ districts }: DistrictListClientProps) => {
                     <div>
                       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-800 text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-3">
                         <MapPin size={10} />
-                        {safeString(district.division)}
+                        {safeString(district.division)} Division
                       </div>
                       <h2 className="text-3xl font-black text-zinc-50 group-hover:text-green-600 transition-colors">
                         {safeString(district.name)}
@@ -114,25 +114,25 @@ export const DistrictListClient = ({ districts }: DistrictListClientProps) => {
 
                     <div className="grid grid-cols-2 gap-6">
                       <div className="space-y-1">
-                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Trees</p>
+                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Estimated Trees</p>
                         <p className="text-xl font-bold text-zinc-200">
                           {(district.estimatedTrees / 1000000).toFixed(1)}M
                         </p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Score</p>
+                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Env Score</p>
                         <p className="text-xl font-bold tracking-tighter" style={{ color: ZONE_CONFIG[district.zone].color }}>
-                          {district.score.toFixed(1)}<span className="text-xs opacity-50">/100</span>
+                          {district.score.toFixed(1)}<span className="text-xs opacity-50 ml-1">/100</span>
                         </p>
                       </div>
                     </div>
 
-                    <div className="pt-6 border-t border-zinc-800 flex items-center justify-between group-hover:pt-8 transition-all">
+                    <div className="pt-6 border-t border-zinc-800 flex items-center justify-between transition-all">
                       <div className="flex items-center gap-2 text-zinc-400 text-xs font-medium">
                         <Trees size={14} className="text-green-600" />
                         <span>{district.treesPerKm2.toLocaleString()} trees/km²</span>
                       </div>
-                      <div className="p-2 rounded-full bg-zinc-800 text-zinc-400 group-hover:bg-green-600 group-hover:text-white transition-all">
+                      <div className="p-2 rounded-full bg-zinc-800 text-zinc-400 group-hover:bg-green-600 group-hover:text-white transition-all scale-90 group-hover:scale-100">
                         <ArrowRight size={16} />
                       </div>
                     </div>

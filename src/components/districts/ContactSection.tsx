@@ -32,7 +32,7 @@ export const ContactSection = () => {
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Email Us</p>
-                                    <p className="text-zinc-300 font-medium tracking-tight">contact@greenbangladesh.gov.bd</p>
+                                    <p className="text-zinc-300 font-medium tracking-tight">toqiabdullah61990@gmail.com</p>
                                 </div>
                             </div>
 
@@ -64,9 +64,9 @@ export const ContactSection = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label htmlFor="name" className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Name</label>
-                                    <input 
-                                        type="text" 
-                                        id="name" 
+                                    <input
+                                        type="text"
+                                        id="name"
                                         placeholder="Your full name"
                                         required
                                         className="w-full px-6 py-4 rounded-2xl bg-zinc-900 border border-zinc-800 outline-none focus:ring-2 focus:ring-green-500/50 transition-all text-sm"
@@ -74,9 +74,9 @@ export const ContactSection = () => {
                                 </div>
                                 <div className="space-y-2">
                                     <label htmlFor="email" className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Email</label>
-                                    <input 
-                                        type="email" 
-                                        id="email" 
+                                    <input
+                                        type="email"
+                                        id="email"
                                         placeholder="Your email address"
                                         required
                                         className="w-full px-6 py-4 rounded-2xl bg-zinc-900 border border-zinc-800 outline-none focus:ring-2 focus:ring-green-500/50 transition-all text-sm"
@@ -85,8 +85,8 @@ export const ContactSection = () => {
                             </div>
                             <div className="space-y-2">
                                 <label htmlFor="message" className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Message</label>
-                                <textarea 
-                                    id="message" 
+                                <textarea
+                                    id="message"
                                     rows={4}
                                     placeholder="How can we help you?"
                                     required
