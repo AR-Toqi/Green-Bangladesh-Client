@@ -4,6 +4,8 @@
 
 **Green Bangladesh** is a comprehensive environmental monitoring and tree plantation platform. It provides a data-driven visualization of tree density across all 64 districts of Bangladesh and encourages community-led reforestation efforts.
 
+**Live App**: [green-bangladesh-client.vercel.app](https://green-bangladesh-client.vercel.app)
+
 ## 🚀 Features
 
 ### 🗺️ Environmental Visualization
