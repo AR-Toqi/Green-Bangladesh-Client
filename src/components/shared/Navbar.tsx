@@ -3,6 +3,7 @@ import { checkAndRefreshToken } from "@/lib/tokenUtils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { TreePine, User } from "lucide-react";
+import MobileMenu from "./MobileMenu";
 
 export async function Navbar() {
   await checkAndRefreshToken();
@@ -35,6 +36,7 @@ export async function Navbar() {
             <Link href="/login" className="transition-colors hover:text-green-600">Login</Link>
           )}
         </nav>
+        <MobileMenu token={token} />
       </div>
     </header>
   );

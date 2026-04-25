@@ -34,6 +34,19 @@
 - **Forms**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
 - **Auth**: [Better Auth](https://better-auth.com/) (Custom Integration)
 
+## 🖥️ Backend
+
+The backend for this project is a robust API built to handle data visualization and community reports.
+
+- **Repository**: [Green Bangladesh Backend](https://github.com/AR-Toqi/Green-Bangladesh)
+- **Runtime**: [Node.js](https://nodejs.org/)
+- **Framework**: [Express.js](https://expressjs.com/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **ORM**: [Prisma](https://www.prisma.io/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/)
+- **Auth**: [Better Auth](https://better-auth.com/)
+- **Validation**: [Zod](https://zod.dev/)
+
 ## 📦 Getting Started
 
 ### Prerequisites
