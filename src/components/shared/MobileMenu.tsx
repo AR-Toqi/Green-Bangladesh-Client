@@ -74,7 +74,7 @@ export default function MobileMenu({ token }: MobileMenuProps) {
               exit="closed"
               variants={overlayVariants}
               onClick={closeMenu}
-              className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm"
+              className="fixed inset-0 z-40 bg-zinc-950/10"
             />
 
             {/* Menu Content */}
@@ -83,7 +83,7 @@ export default function MobileMenu({ token }: MobileMenuProps) {
               animate="opened"
               exit="closed"
               variants={menuVariants}
-              className="fixed right-0 top-0 z-50 h-full w-[280px] bg-background border-l p-6 shadow-2xl flex flex-col"
+              className="fixed right-0 top-0 z-50 h-full w-[280px] bg-zinc-50 dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800 p-6 flex flex-col"
             >
               <div className="flex items-center justify-between mb-8">
                 <span className="text-lg font-bold text-green-600">Menu</span>
@@ -97,32 +97,32 @@ export default function MobileMenu({ token }: MobileMenuProps) {
                 </Button>
               </div>
 
-              <nav className="flex flex-col gap-4">
+              <nav className="flex flex-col gap-1">
                 <Link
                   href="/"
                   onClick={closeMenu}
-                  className="text-lg font-medium transition-colors hover:text-green-600 py-2 border-b border-zinc-100 dark:border-zinc-800"
+                  className="text-lg font-medium transition-colors hover:text-green-600 py-3 px-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900"
                 >
                   Home
                 </Link>
                 <Link
                   href="/districts"
                   onClick={closeMenu}
-                  className="text-lg font-medium transition-colors hover:text-green-600 py-2 border-b border-zinc-100 dark:border-zinc-800"
+                  className="text-lg font-medium transition-colors hover:text-green-600 py-3 px-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900"
                 >
                   Districts
                 </Link>
                 <Link
                   href="/leaderboard"
                   onClick={closeMenu}
-                  className="text-lg font-medium transition-colors hover:text-green-600 py-2 border-b border-zinc-100 dark:border-zinc-800"
+                  className="text-lg font-medium transition-colors hover:text-green-600 py-3 px-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900"
                 >
                   Leaderboard
                 </Link>
 
                 <div className="pt-4 flex flex-col gap-4">
                   <Link href="/report-plantation" onClick={closeMenu}>
-                    <Button className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full py-6 font-bold flex items-center justify-center gap-2 shadow-lg shadow-green-900/20">
+                    <Button className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-6 font-bold flex items-center justify-center gap-2">
                       <TreePine size={18} />
                       Plant a Tree
                     </Button>
