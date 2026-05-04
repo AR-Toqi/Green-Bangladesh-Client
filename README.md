@@ -100,6 +100,3 @@ src/
 
 **[Abdullah Ragib Toqi](https://www.linkedin.com/in/abdullah-ragib-toqi-b5154a297/)**  
 Full-Stack Developer | Environmental Enthusiast
-
----
-Built with ❤️ for a Greener Bangladesh.

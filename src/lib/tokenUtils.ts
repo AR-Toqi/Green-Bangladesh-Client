@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import * as jwt from "jsonwebtoken";
 import { parseAndSetCookies } from "./cookieUtils";
+import { API_BASE_URL } from "./api";
 
 export const checkAndRefreshToken = async () => {
   const cookieStore = await cookies();
@@ -18,7 +19,6 @@ export const checkAndRefreshToken = async () => {
       if (refreshToken && sessionToken) {
         // Time to refresh
         try {
-          const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
           const res = await fetch(`${API_BASE_URL}/auth/get-new-token`, {
             method: "POST",
             headers: {

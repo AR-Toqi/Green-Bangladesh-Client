@@ -126,8 +126,8 @@ export const BangladeshMap = ({ districtsData, className }: BangladeshMapProps) 
       >
         <g>
           {paths.map((p, i) => {
-            const zone = p.data?.zone || "RED";
-            const config = ZONE_CONFIG[zone as keyof typeof ZONE_CONFIG];
+            const zone = (p.data?.zone || "RED").toUpperCase();
+            const config = ZONE_CONFIG[zone as keyof typeof ZONE_CONFIG] || ZONE_CONFIG.RED;
             const isHovered = hoveredDistrict?.properties.ADM2_EN === p.properties.ADM2_EN;
 
             return (
