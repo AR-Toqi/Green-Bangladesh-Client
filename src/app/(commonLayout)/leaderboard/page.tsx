@@ -7,9 +7,15 @@ export const metadata = {
   description: "Global district tree plantation rankings. See which districts are leading the green movement.",
 };
 
-export default async function LeaderboardPage() {
-  const response = await getLeaderboardApi();
+export default async function LeaderboardPage({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ page?: string; limit?: string }> 
+}) {
+  const { page = "1", limit = "10" } = await searchParams;
+  const response = await getLeaderboardApi(Number(page), Number(limit));
   const leaderboardData = response.data || [];
+  const meta = response.meta;
 
   return (
     <div className="min-h-screen bg-black font-sans box-border overflow-x-hidden">
@@ -38,7 +44,7 @@ export default async function LeaderboardPage() {
       {/* ── Main Content ─────────────────────────────────────────── */}
       <main className="container mx-auto max-w-7xl px-6 pb-32">
         {leaderboardData.length > 0 ? (
-          <LeaderboardTable data={leaderboardData} />
+          <LeaderboardTable data={leaderboardData} meta={meta} />
         ) : (
           <div className="text-center py-24 space-y-4">
              <div className="inline-flex p-6 rounded-full bg-zinc-900 text-zinc-400 animate-bounce">

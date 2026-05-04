@@ -15,8 +15,8 @@ interface HeroProps {
 
 export const Hero = ({ initialData }: HeroProps) => {
   const { data: response } = useQuery({
-    queryKey: ["districts"],
-    queryFn: getAllDistrictsApi,
+    queryKey: ["districts", "all"],
+    queryFn: () => getAllDistrictsApi(1, 100),
     initialData,
   });
 

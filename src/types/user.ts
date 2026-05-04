@@ -13,6 +13,8 @@ export type TUserProfile = TUser & {
   totalTrees?: number;
   numberOfTrees?: number;
   totalReports?: number;
+  districtId?: string;
+  district?: any;
   [key: string]: any;
 };
 
@@ -20,6 +22,7 @@ export type TUpdateProfile = {
   name?: string;
   bio?: string;
   address?: string;
+  districtId?: string;
 };
 
 export type TUserProfileResponse = {

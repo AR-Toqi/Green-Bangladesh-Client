@@ -60,19 +60,19 @@ export const MapTooltip = ({ district, properties, x, y }: MapTooltipProps) => {
         <div className="flex justify-between pt-1 border-t border-zinc-100 dark:border-zinc-900">
           <span className="text-zinc-500">Density</span>
           <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-            {districtData.treesPerKm2.toLocaleString()} <span className="text-[10px] font-normal opacity-70">trees/km²</span>
+            {(districtData.treesPerKm2 || 0).toLocaleString()} <span className="text-[10px] font-normal opacity-70">trees/km²</span>
           </span>
         </div>
         <div className="flex justify-between">
           <span className="text-zinc-500">Total Trees</span>
           <span className="text-zinc-800 dark:text-zinc-200 font-medium">
-            {(districtData.estimatedTrees / 1000000).toFixed(1)}M
+            {((districtData.estimatedTrees || 0) / 1000000).toFixed(1)}M
           </span>
         </div>
         <div className="flex justify-between">
           <span className="text-zinc-500">Area</span>
           <span className="text-zinc-800 dark:text-zinc-200 font-medium">
-            {districtData.area.toLocaleString()} km²
+            {(districtData.area || 0).toLocaleString()} km²
           </span>
         </div>
         

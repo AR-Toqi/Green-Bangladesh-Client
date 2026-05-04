@@ -8,9 +8,15 @@ export const metadata = {
   description: "Explore environmental statistics and tree density across all 64 districts of Bangladesh.",
 };
 
-export default async function DistrictsPage() {
-  const response = await getAllDistrictsApi();
+export default async function DistrictsPage({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ page?: string; limit?: string }> 
+}) {
+  const { page = "1", limit = "12" } = await searchParams;
+  const response = await getAllDistrictsApi(Number(page), Number(limit));
   const districts = response.data || [];
+  const meta = response.meta;
 
   return (
     <div className="min-h-screen bg-black font-sans box-border overflow-x-hidden">
@@ -38,7 +44,7 @@ export default async function DistrictsPage() {
 
       {/* ── Main Content ─────────────────────────────────────────── */}
       <main className="container mx-auto max-w-7xl px-6 pb-32">
-        <DistrictListClient districts={districts} />
+        <DistrictListClient districts={districts} meta={meta} />
       </main>
 
       {/* ── Contact Section ── */}

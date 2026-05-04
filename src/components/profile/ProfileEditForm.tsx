@@ -6,10 +6,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProfileSchema, TUpdateProfileSchema } from "@/zod/profile.schema";
 import { updateUserProfileAction } from "@/app/(protectedLayout)/actions";
 import { TUserProfile } from "@/types/user";
+import { TDistrict } from "@/types/district";
 import { Loader2, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export function ProfileEditForm({ initialData }: { initialData: TUserProfile }) {
+export function ProfileEditForm({ 
+  initialData, 
+  districts 
+}: { 
+  initialData: TUserProfile,
+  districts: TDistrict[]
+}) {
   const router = useRouter();
   const [serverError, setServerError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,6 +31,7 @@ export function ProfileEditForm({ initialData }: { initialData: TUserProfile }) 
       name: initialData.name || "",
       bio: initialData.profile?.bio || "",
       address: initialData.profile?.address || "",
+      districtId: initialData.districtId || "",
     },
   });
 
@@ -50,14 +58,32 @@ export function ProfileEditForm({ initialData }: { initialData: TUserProfile }) 
       )}
 
       <div className="space-y-4">
-        <div className="space-y-1">
-          <label className="text-zinc-400 text-xs font-bold uppercase tracking-widest">Full Name</label>
-          <input
-            {...register("name")}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all"
-            placeholder="John Doe"
-          />
-          {errors.name && <span className="text-red-500 text-xs">{errors.name.message}</span>}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <label className="text-zinc-400 text-xs font-bold uppercase tracking-widest">Full Name</label>
+            <input
+              {...register("name")}
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all"
+              placeholder="John Doe"
+            />
+            {errors.name && <span className="text-red-500 text-xs">{errors.name.message}</span>}
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-zinc-400 text-xs font-bold uppercase tracking-widest">Your District</label>
+            <select
+              {...register("districtId")}
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all appearance-none"
+            >
+              <option value="">Select District</option>
+              {districts.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {typeof d.name === 'string' ? d.name : d.name.name}
+                </option>
+              ))}
+            </select>
+            {errors.districtId && <span className="text-red-500 text-xs">{errors.districtId.message}</span>}
+          </div>
         </div>
 
         <div className="space-y-1">
@@ -75,7 +101,7 @@ export function ProfileEditForm({ initialData }: { initialData: TUserProfile }) 
           <input
             {...register("address")}
             className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-green-500/50 transition-all"
-            placeholder="Your city or district"
+            placeholder="Your city or specific location"
           />
           {errors.address && <span className="text-red-500 text-xs">{errors.address.message}</span>}
         </div>

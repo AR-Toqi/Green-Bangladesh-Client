@@ -18,9 +18,16 @@ export type TDistrict = {
   zone: TZone; // assigned by backend based on score
 };
 
+export type TMeta = {
+  page: number;
+  limit: number;
+  total: number;
+};
+
 export type TDistrictResponse = {
   success: boolean;
   message: string;
+  meta?: TMeta;
   data: TDistrict[];
 };
 

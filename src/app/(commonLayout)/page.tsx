@@ -6,7 +6,7 @@ import { ImportanceOfPlantation } from "@/components/home/ImportanceOfPlantation
 import { getAllDistrictsApi } from "@/services/district.service";
 
 export default async function Home() {
-  const initialData = await getAllDistrictsApi();
+  const initialData = await getAllDistrictsApi(1, 100);
 
   return (
     <>

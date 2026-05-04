@@ -1,11 +1,14 @@
 "use client";
 
 import { TLeaderboardItem } from "@/types/leaderboard";
+import { TMeta } from "@/types/district";
 import { motion } from "framer-motion";
-import { Trophy, Trees, ClipboardList, TrendingUp } from "lucide-react";
+import { Trophy, Trees, ClipboardList, TrendingUp, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface LeaderboardTableProps {
   data: TLeaderboardItem[];
+  meta?: TMeta;
 }
 
 const RankBadge = ({ rank }: { rank: number }) => {
@@ -15,8 +18,12 @@ const RankBadge = ({ rank }: { rank: number }) => {
   return <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-500 font-black text-sm">{rank}</div>;
 };
 
-export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
-  const sortedData = [...data].sort((a, b) => (b.totalPlanted || 0) - (a.totalPlanted || 0));
+export const LeaderboardTable = ({ data, meta }: LeaderboardTableProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Since backend already sorts it, we use it as is.
+  const sortedData = data;
   const maxTrees = Math.max(...sortedData.map(d => (d.totalPlanted || 0)), 1);
 
   return (
@@ -45,7 +52,7 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
       {/* ── Rankings List ───────────────────────────────────────── */}
       <div className="grid gap-4">
         {sortedData.map((item, index) => {
-          const rank = index + 1;
+          const rank = meta ? (meta.page - 1) * meta.limit + index + 1 : index + 1;
           const currentTrees = item.totalPlanted || 0;
           const percentage = (currentTrees / maxTrees) * 100;
           
@@ -54,7 +61,7 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              key={item.name || index}
+              key={item.id || index}
               className={`p-6 rounded-3xl bg-zinc-950/50 border border-zinc-900/50 hover:border-green-500/30 transition-all group relative overflow-hidden ${rank === 1 ? 'ring-2 ring-yellow-500/20' : ''}`}
             >
               {/* Background Gradient for Rank 1 */}
@@ -120,6 +127,63 @@ export const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
           );
         })}
       </div>
+
+      {/* ── Pagination Section ─────────────────────────────────────── */}
+      {meta && meta.total > meta.limit && (
+        <div className="flex items-center justify-between pt-12 border-t border-zinc-900">
+          <div className="text-zinc-500 text-sm font-medium">
+            Showing <span className="text-zinc-300">{(meta.page - 1) * meta.limit + 1}</span> to <span className="text-zinc-300">{Math.min(meta.page * meta.limit, meta.total)}</span> of <span className="text-zinc-300">{meta.total}</span> entries
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.set("page", (meta.page - 1).toString());
+                router.push(`?${params.toString()}`);
+              }}
+              disabled={meta.page <= 1}
+              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              title="Previous Page"
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            {/* Page Numbers */}
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.ceil(meta.total / meta.limit) }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.set("page", pageNum.toString());
+                    router.push(`?${params.toString()}`);
+                  }}
+                  className={`h-12 w-12 rounded-2xl border font-bold transition-all ${
+                    meta.page === pageNum
+                      ? "bg-green-600 border-green-500 text-white shadow-lg shadow-green-900/20"
+                      : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.set("page", (meta.page + 1).toString());
+                router.push(`?${params.toString()}`);
+              }}
+              disabled={meta.page * meta.limit >= meta.total}
+              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              title="Next Page"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

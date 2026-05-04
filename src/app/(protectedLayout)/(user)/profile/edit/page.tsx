@@ -1,15 +1,21 @@
 import React from "react";
 import { getCurrentUserApi } from "@/services/user.service";
+import { getAllDistrictsApi } from "@/services/district.service";
 import { ProfileEditForm } from "@/components/profile/ProfileEditForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 export default async function EditProfilePage() {
   let userProfile;
+  let districts = [];
   
   try {
-    const response = await getCurrentUserApi();
-    userProfile = response.data;
+    const [userRes, districtsRes] = await Promise.all([
+      getCurrentUserApi(),
+      getAllDistrictsApi(1, 100)
+    ]);
+    userProfile = userRes.data;
+    districts = districtsRes.data || [];
   } catch (error) {
     return (
       <div className="container py-20 text-center text-red-500">
@@ -49,7 +55,7 @@ export default async function EditProfilePage() {
           {/* Subtle glow effect */}
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-green-500/50 to-transparent" />
           
-          <ProfileEditForm initialData={userProfile} />
+          <ProfileEditForm initialData={userProfile} districts={districts} />
         </section>
       </main>
     </div>

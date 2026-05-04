@@ -7,8 +7,11 @@ export type TLeaderboardItem = {
   lastPlantationAt?: string;
 };
 
+import { TMeta } from "./district";
+
 export type TLeaderboardResponse = {
   success: boolean;
   message: string;
+  meta?: TMeta;
   data: TLeaderboardItem[];
 };

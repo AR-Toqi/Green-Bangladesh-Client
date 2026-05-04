@@ -2,11 +2,11 @@ import { TLeaderboardResponse } from "@/types/leaderboard";
 import { cookies } from "next/headers";
 import { API_BASE_URL } from "@/lib/api";
 
-export const getLeaderboardApi = async (): Promise<TLeaderboardResponse> => {
+export const getLeaderboardApi = async (page = 1, limit = 10): Promise<TLeaderboardResponse> => {
   try {
     const cookieStore = await cookies();
     
-    const response = await fetch(`${API_BASE_URL}/leaderboard`, {
+    const response = await fetch(`${API_BASE_URL}/leaderboard?page=${page}&limit=${limit}`, {
       headers: {
         Cookie: cookieStore.toString(),
       },
@@ -62,7 +62,8 @@ export const getLeaderboardApi = async (): Promise<TLeaderboardResponse> => {
           reportCount: 195,
           lastPlantationAt: new Date().toISOString(),
         }
-      ]
+      ],
+      meta: { page: 1, limit: 10, total: 5 }
     };
   }
 };

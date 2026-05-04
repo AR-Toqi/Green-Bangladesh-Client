@@ -1,16 +1,20 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { TDistrict, ZONE_CONFIG, TZone } from "@/types/district";
+import { TDistrict, ZONE_CONFIG, TZone, TMeta } from "@/types/district";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Filter, Trees, MapPin, ArrowRight } from "lucide-react";
+import { Search, Filter, Trees, MapPin, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface DistrictListClientProps {
   districts: TDistrict[];
+  meta?: TMeta;
 }
 
-export const DistrictListClient = ({ districts }: DistrictListClientProps) => {
+export const DistrictListClient = ({ districts, meta }: DistrictListClientProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeZone, setActiveZone] = useState<TZone | "ALL">("ALL");
 
@@ -130,7 +134,7 @@ export const DistrictListClient = ({ districts }: DistrictListClientProps) => {
                     <div className="pt-6 border-t border-zinc-800 flex items-center justify-between transition-all">
                       <div className="flex items-center gap-2 text-zinc-400 text-xs font-medium">
                         <Trees size={14} className="text-green-600" />
-                        <span>{district.treesPerKm2.toLocaleString()} trees/km²</span>
+                        <span>{(district.treesPerKm2 || 0).toLocaleString()} trees/km²</span>
                       </div>
                       <div className="p-2 rounded-full bg-zinc-800 text-zinc-400 group-hover:bg-green-600 group-hover:text-white transition-all scale-90 group-hover:scale-100">
                         <ArrowRight size={16} />
@@ -142,6 +146,63 @@ export const DistrictListClient = ({ districts }: DistrictListClientProps) => {
             ))}
           </AnimatePresence>
         </motion.div>
+      )}
+
+      {/* ── Pagination Section ─────────────────────────────────────── */}
+      {meta && meta.total > meta.limit && (
+        <div className="flex items-center justify-between pt-12 border-t border-zinc-900">
+          <div className="text-zinc-500 text-sm font-medium">
+            Showing <span className="text-zinc-300">{(meta.page - 1) * meta.limit + 1}</span> to <span className="text-zinc-300">{Math.min(meta.page * meta.limit, meta.total)}</span> of <span className="text-zinc-300">{meta.total}</span> districts
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.set("page", (meta.page - 1).toString());
+                router.push(`?${params.toString()}`);
+              }}
+              disabled={meta.page <= 1}
+              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              title="Previous Page"
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            {/* Page Numbers */}
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.ceil(meta.total / meta.limit) }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.set("page", pageNum.toString());
+                    router.push(`?${params.toString()}`);
+                  }}
+                  className={`h-12 w-12 rounded-2xl border font-bold transition-all ${
+                    meta.page === pageNum
+                      ? "bg-green-600 border-green-500 text-white shadow-lg shadow-green-900/20"
+                      : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.set("page", (meta.page + 1).toString());
+                router.push(`?${params.toString()}`);
+              }}
+              disabled={meta.page * meta.limit >= meta.total}
+              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              title="Next Page"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -1,9 +1,9 @@
 import { TDistrictResponse, TSingleDistrictResponse, TDistrict } from "@/types/district";
 import { API_BASE_URL } from "@/lib/api";
 
-export const getAllDistrictsApi = async (): Promise<TDistrictResponse> => {
+export const getAllDistrictsApi = async (page = 1, limit = 10): Promise<TDistrictResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/districts`, {
+    const response = await fetch(`${API_BASE_URL}/districts?page=${page}&limit=${limit}`, {
       next: { revalidate: 300 }, // revalidate every 5 minutes
     });
 
@@ -18,20 +18,21 @@ export const getAllDistrictsApi = async (): Promise<TDistrictResponse> => {
     
     // Fallback data for the 8 divisions to keep the map and stats alive
     const mockDistricts = [
-      { id: "1", name: "Dhaka", estimatedTrees: 4500000000, landArea: 300, score: 85, zone: "GREEN" },
-      { id: "2", name: "Chittagong", estimatedTrees: 3200000000, landArea: 250, score: 70, zone: "ORANGE" },
-      { id: "3", name: "Sylhet", estimatedTrees: 2800000000, landArea: 200, score: 90, zone: "GREEN" },
-      { id: "4", name: "Rajshahi", estimatedTrees: 1500000000, landArea: 180, score: 45, zone: "RED" },
-      { id: "5", name: "Khulna", estimatedTrees: 1800000000, landArea: 220, score: 55, zone: "ORANGE" },
-      { id: "6", name: "Barisal", estimatedTrees: 1200000000, landArea: 150, score: 60, zone: "ORANGE" },
-      { id: "7", name: "Rangpur", estimatedTrees: 900000000, landArea: 170, score: 35, zone: "RED" },
-      { id: "8", name: "Mymensingh", estimatedTrees: 1100000000, landArea: 160, score: 50, zone: "RED" },
+      { id: "1", name: "Dhaka", estimatedTrees: 4500000000, area: 300, treesPerKm2: 15000, score: 85, zone: "GREEN" },
+      { id: "2", name: "Chittagong", estimatedTrees: 3200000000, area: 250, treesPerKm2: 12800, score: 70, zone: "ORANGE" },
+      { id: "3", name: "Sylhet", estimatedTrees: 2800000000, area: 200, treesPerKm2: 14000, score: 90, zone: "GREEN" },
+      { id: "4", name: "Rajshahi", estimatedTrees: 1500000000, area: 180, treesPerKm2: 8333, score: 45, zone: "ORANGE" },
+      { id: "5", name: "Khulna", estimatedTrees: 1800000000, area: 220, treesPerKm2: 8181, score: 55, zone: "GREEN" },
+      { id: "6", name: "Barisal", estimatedTrees: 1200000000, area: 150, treesPerKm2: 8000, score: 60, zone: "GREEN" },
+      { id: "7", name: "Rangpur", estimatedTrees: 900000000, area: 170, treesPerKm2: 5294, score: 35, zone: "ORANGE" },
+      { id: "8", name: "Mymensingh", estimatedTrees: 1100000000, area: 160, treesPerKm2: 6875, score: 50, zone: "ORANGE" },
     ];
 
     return {
       success: true,
       message: "Showing demonstration data (API unreachable)",
-      data: mockDistricts as any
+      data: mockDistricts as any,
+      meta: { page: 1, limit: 10, total: 8 }
     };
   }
 };
