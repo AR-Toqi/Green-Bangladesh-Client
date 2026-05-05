@@ -1,100 +1,81 @@
-# 🌱 Green Bangladesh - Client
+# 🌱 Green Bangladesh - Comprehensive Environmental Platform
 
 ![Project Banner](https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80&w=2000)
 
-**Green Bangladesh** is a comprehensive environmental monitoring and tree plantation platform. It provides a data-driven visualization of tree density across all 64 districts of Bangladesh and encourages community-led reforestation efforts.
+**Green Bangladesh** is a state-of-the-art environmental monitoring and tree plantation platform. It combines data-driven visualization with community-led action to combat deforestation across all 64 districts of Bangladesh.
 
 **Live App**: [green-bangladesh-client.vercel.app](https://green-bangladesh-client.vercel.app)
+**API Documentation**: [green-bangladesh-api.vercel.app](https://green-bangladesh-api.vercel.app)
 
-## 🚀 Features
+---
 
-### 🗺️ Environmental Visualization
-- **Interactive Map**: A custom D3-powered SVG map of Bangladesh highlighting zones by environmental health (Green, Orange, Red).
-- **District Directory**: Detailed statistics for every district, including estimated tree counts, land area, and environmental scores.
-- **Micro-animations**: Smooth, professional page transitions and interactive elements powered by Framer Motion.
+## 🚀 Key Features
 
-### 🏆 Community Engagement
-- **Leaderboard**: Real-time rankings of top districts and individual contributors based on verified plantation reports.
-- **Plantation Reporting**: Secure authenticated flow for users to report new tree plantations with location data.
+### 🗺️ Data Visualization & Impact
+- **Interactive D3 Map**: A custom SVG-based map of Bangladesh visualizing environmental zones (Green, Orange, Red) in real-time.
+- **CO2 Impact Calculator**: An interactive tool that translates tree plantation numbers into tangible environmental benefits (CO2 kg offset, car mileage saved, smartphone charges equivalent).
+- **Personal Impact Dashboard**: Authenticated users can track their individual contributions, total trees planted, and their current "Environmental Tier."
+- **District Environmental Scores**: Dynamic scoring system based on tree density per square kilometer.
 
-### 🛡️ Administrative Dashboard
-- **District Management**: Admins can update land area, tree estimates, and environmental scores.
-- **User Moderation**: Manage user roles (User/Admin) and account statuses (Active/Blocked).
-- **Plantation Moderation**: Verify and approve community plantation reports.
-- **Statistics**: Global overview of platform impact and growth.
+### 🏆 Community & Engagement
+- **Global Leaderboard**: Competitive rankings of districts and individuals based on verified plantation reports.
+- **AI Support Agent**: A proactive AI assistant powered by vector embeddings that provides localized environmental advice and platform support.
+- **Automated Alerts**: Monthly email notifications (via Node-Cron) alerting users when their selected district falls into a "Red Zone."
+
+### 🛡️ Administrative Control
+- **Full Moderation**: Admins can verify plantation reports, manage user roles, and update district environmental metrics.
+- **RBAC**: Secure Role-Based Access Control ensuring system integrity between Users and Administrators.
+
+---
+
+## 🧠 Challenges Faced
+
+During the development of Green Bangladesh, several technical hurdles were overcome:
+
+1.  **AI Implementation & Vector Search**: Integrating an AI support agent required setting up vector embeddings and a vector database. Fine-tuning the agent to provide accurate, localized environmental advice while maintaining performance was a significant challenge.
+2.  **Email Deliverability**: Faced issues with SMTP-based email delivery in production (Render). Successfully migrated to a robust API-based approach using **Brevo (formerly Sendinblue)** to ensure critical verification codes and alerts are delivered reliably.
+3.  **Cross-Domain Authentication**: Resolving cookie synchronization and session persistence between different domains (Frontend on Vercel, Backend on Render) required a deep dive into CORS policies and secure cookie handling.
+4.  **Complex Data Aggregations**: Calculating real-time environmental scores and leaderboards across thousands of reports while maintaining fast response times required optimized Prisma queries and efficient backend logic.
+
+---
 
 ## 🛠️ Tech Stack
 
+### Frontend
 - **Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **State Management**: [TanStack Query (React Query)](https://tanstack.com/query/latest)
-- **Forms**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
-- **Auth**: [Better Auth](https://better-auth.com/) (Custom Integration)
+- **Visualization**: [D3.js](https://d3js.org/)
+- **Auth**: [Better Auth](https://better-auth.com/)
+- **State Management**: [TanStack Query](https://tanstack.com/query/latest)
 
-## 🖥️ Backend
-
-The backend for this project is a robust API built to handle data visualization and community reports.
-
-- **Repository**: [Green Bangladesh Backend](https://github.com/AR-Toqi/Green-Bangladesh)
+### Backend
 - **Runtime**: [Node.js](https://nodejs.org/)
 - **Framework**: [Express.js](https://expressjs.com/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **ORM**: [Prisma](https://www.prisma.io/)
 - **Database**: [PostgreSQL](https://www.postgresql.org/)
-- **Auth**: [Better Auth](https://better-auth.com/)
-- **Validation**: [Zod](https://zod.dev/)
+- **Task Scheduling**: [Node-Cron](https://www.npmjs.com/package/node-cron)
+- **Templating**: [EJS](https://ejs.co/)
 
-## 📦 Getting Started
+---
 
-### Prerequisites
-- Node.js 20+ 
-- pnpm (Recommended) or npm/yarn
+## 🔮 Future Implementations
 
-### Installation
+- **Gamification System**: Achievement badges (e.g., "Forest Guardian", "Seedling") and district-level competitions with rewards.
+- **Historical Analysis**: Visualizing environmental health trends over 12-month periods using line charts.
+- **AI Tree Identification**: Allow users to upload photos of their plantations for AI-powered species identification and health assessment.
+- **PWA Support**: Offline capability for plantation reporting in remote areas with poor connectivity.
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/AR-Toqi/Green-Bangladesh-Client.git
-   cd green-bangladesh-client
-   ```
+---
 
-2. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
+## 📦 Installation & Setup
 
-3. **Configure Environment Variables**:
-   Create a `.env` file in the root directory and add the following:
-   ```env
-   NEXT_PUBLIC_API_BASE_URL=https://green-bangladesh-api.vercel.app/api/v1
-   NEXT_PUBLIC_APP_URL=http://localhost:3000/
-   ```
+1.  **Clone the Repo**: `git clone https://github.com/AR-Toqi/Green-Bangladesh-Client.git`
+2.  **Install Deps**: `pnpm install`
+3.  **Env Config**: Set up `NEXT_PUBLIC_API_BASE_URL` and `NEXT_PUBLIC_APP_URL` in `.env`.
+4.  **Run Dev**: `pnpm dev`
 
-4. **Run the development server**:
-   ```bash
-   pnpm dev
-   ```
-
-5. **Build for production**:
-   ```bash
-   pnpm build
-   pnpm start
-   ```
-
-## 📂 Project Structure
-
-```text
-src/
-├── app/             # Next.js App Router (Pages & API)
-├── components/      # UI Components (shared, home, districts, admin)
-├── lib/             # Utility functions (auth, cookies, utils)
-├── services/        # API Service layer (Axios/Fetch logic)
-├── types/           # TypeScript Interfaces & Types
-└── hooks/           # Custom React Hooks
-```
+---
 
 ## 👨‍💻 Developed By
 
