@@ -1,6 +1,6 @@
 import { getDistrictByIdApi } from "@/services/district.service";
 import { ZONE_CONFIG } from "@/types/district";
-import { MapPin, Trees, Ruler, Activity, ArrowLeft } from "lucide-react";
+import { MapPin, Trees, Ruler, Activity, ArrowLeft, Cloud } from "lucide-react";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -125,7 +125,7 @@ export default async function DistrictDetailPage({ params }: DistrictDetailPageP
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           <div className="group p-10 rounded-[3rem] bg-zinc-950 border border-zinc-900 hover:border-green-500/20 transition-all duration-500 hover:shadow-2xl hover:shadow-green-500/5">
             <div className="h-14 w-14 rounded-2xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-600 mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform">
@@ -163,6 +163,19 @@ export default async function DistrictDetailPage({ params }: DistrictDetailPageP
                 {district.treesPerKm2.toLocaleString()} <span className="text-xl opacity-30 text-[10px]">trees/km²</span>
               </p>
               <p className="text-xs text-zinc-500 italic pt-2 border-t border-zinc-50 dark:border-zinc-900">Trees per square kilometer</p>
+            </div>
+          </div>
+
+          <div className="group p-10 rounded-[3rem] bg-zinc-950 border border-zinc-900 hover:border-teal-500/20 transition-all duration-500 hover:shadow-2xl hover:shadow-teal-500/5">
+            <div className="h-14 w-14 rounded-2xl bg-teal-50 dark:bg-teal-900/20 flex items-center justify-center text-teal-500 mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform">
+              <Cloud size={28} />
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">CO2 Offset</h4>
+              <p className="text-4xl font-black text-zinc-100 tracking-tight">
+                {district.co2Impact?.tonnesPerYear.toLocaleString()} <span className="text-xl opacity-30">T/yr</span>
+              </p>
+              <p className="text-xs text-zinc-500 italic pt-2 border-t border-zinc-50 dark:border-zinc-900">Annual carbon sequestration</p>
             </div>
           </div>
         </AnimatedSection>

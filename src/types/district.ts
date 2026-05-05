@@ -6,6 +6,12 @@ export type TZone = "RED" | "ORANGE" | "GREEN";
 export type TStringOrObject = string | { name: string };
 
 // ── Backend API Response Types ───────────────────────────────────────
+export type TCO2Impact = {
+  yearlyKg: number;
+  monthlyKg: number;
+  tonnesPerYear: number;
+};
+
 export type TDistrict = {
   _id?: string;
   id?: string;
@@ -16,6 +22,7 @@ export type TDistrict = {
   treesPerKm2: number;
   score: number; // calculated by backend based on tree density
   zone: TZone; // assigned by backend based on score
+  co2Impact?: TCO2Impact;
 };
 
 export type TMeta = {

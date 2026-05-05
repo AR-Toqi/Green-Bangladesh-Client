@@ -2,7 +2,7 @@ import { getCurrentUserApi } from "@/services/user.service";
 import { getPlantationsApi } from "@/services/plantation.service";
 import { logoutUserAction } from "@/app/(commonLayout)/_actions";
 import Link from "next/link";
-import { MapPin, Mail, Calendar, Edit3, Shield, Star, Award, TreePine, LogOut } from "lucide-react";
+import { MapPin, Mail, Calendar, Edit3, Shield, Star, Award, TreePine, LogOut, Cloud } from "lucide-react";
 import { format } from "date-fns";
 
 export default async function ProfilePage() {
@@ -148,7 +148,7 @@ export default async function ProfilePage() {
             <div className="h-px bg-zinc-900 flex-1" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="p-8 rounded-[2rem] bg-zinc-950 border border-zinc-900 hover:border-green-500/30 transition-colors group">
               <div className="h-12 w-12 rounded-xl bg-green-500/10 text-green-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <TreePine size={24} />
@@ -174,6 +174,17 @@ export default async function ProfilePage() {
               <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest mb-1">Contributions</p>
               <p className="text-4xl font-black tracking-tight">{totalReports}</p>
               <p className="text-zinc-600 text-xs mt-2 italic">Reports submitted</p>
+            </div>
+
+            <div className="p-8 rounded-[2rem] bg-zinc-950 border border-zinc-900 hover:border-teal-500/30 transition-colors group">
+              <div className="h-12 w-12 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Cloud size={24} />
+              </div>
+              <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest mb-1">CO2 Offset</p>
+              <p className="text-4xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-teal-600">
+                {anyProfile.co2Impact?.yearlyKg?.toLocaleString() || 0} <span className="text-sm opacity-50">kg/yr</span>
+              </p>
+              <p className="text-zinc-600 text-xs mt-2 italic">Total carbon sequestered</p>
             </div>
           </div>
         </section>
