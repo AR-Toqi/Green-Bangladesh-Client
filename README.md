@@ -32,10 +32,8 @@
 
 During the development of Green Bangladesh, several technical hurdles were overcome:
 
-1.  **AI Implementation & Vector Search**: Integrating an AI support agent required setting up vector embeddings and a vector database. Fine-tuning the agent to provide accurate, localized environmental advice while maintaining performance was a significant challenge.
-2.  **Email Deliverability**: Faced issues with SMTP-based email delivery in production (Render). Successfully migrated to a robust API-based approach using **Brevo (formerly Sendinblue)** to ensure critical verification codes and alerts are delivered reliably.
-3.  **Cross-Domain Authentication**: Resolving cookie synchronization and session persistence between different domains (Frontend on Vercel, Backend on Render) required a deep dive into CORS policies and secure cookie handling.
-4.  **Complex Data Aggregations**: Calculating real-time environmental scores and leaderboards across thousands of reports while maintaining fast response times required optimized Prisma queries and efficient backend logic.
+1.  **D3.js Map Integration**: Implementing the interactive SVG map of Bangladesh was a major challenge. Balancing the precision of geographic data (GeoJSON) with smooth interactivity and D3's complex API required careful engineering.
+2.  **Next.js Optimization & RSC**: A core challenge was optimizing the application for speed and SEO. I successfully maintained almost all main pages as **Server Components**, moving heavy data fetching and logic to the server while strategically using Client Components only for interactivity.
 
 ---
 
